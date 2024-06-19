@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch Products</title>
+</head>
+<body>
+    <h1>Fetch Products from Hydrosan</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="url" value="https://hydrosan.eu/sitemap-produkty.xml">Pobierz z Hydrosan</button>
+            
+        <button type="submit" name="url" value="https://mazurspa.pl/product-sitemap.xml">Pobierz z Mazur Spa</button>
+
+    </form>
+    <ul>
+        {% for category in categories %}
+            <li>{{ category }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
