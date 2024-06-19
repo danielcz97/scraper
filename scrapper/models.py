@@ -7,5 +7,7 @@ class Product(models.Model):
     category = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
     shop = models.CharField(max_length=255, null=True)
+    last_changes = models.DateTimeField(auto_now=True, null=True)  
+
     def __str__(self):
         return self.name
