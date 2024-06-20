@@ -5,7 +5,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from decimal import Decimal, InvalidOperation
-
+from django.utils import timezone
 def fetch_links_from_sitemap(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'xml')
@@ -61,10 +61,36 @@ def fetch_product_details_hydrosan(url):
 
         website = url
 
-        product, created = Product.objects.update_or_create(
-            website=website,
-            defaults={'name': name, 'price': price, 'stock': stock, 'category': categories, 'shop': 'Hydrosan'}
-        )
+        product = Product.objects.filter(website=website).first()
+
+        changes = []
+        if product:
+            if product.price != price:
+                changes.append(f"Zmieniono cenę z {product.price} na {price}")
+            if product.stock != stock:
+                changes.append(f"Zmieniono stock z {product.stock} na {stock}")
+
+            if changes:
+                # Zaktualizuj tylko zmienione pola i ustaw last_changes
+                product.name = name
+                product.price = price
+                product.stock = stock
+                product.category = categories
+                product.shop = 'Hydrosan'
+                product.last_changes = timezone.now()
+                product.last_changes_details = "; ".join(changes)
+                product.save()
+        else:
+            product = Product.objects.create(
+                name=name,
+                price=price,
+                stock=stock,
+                category=categories,
+                website=website,
+                shop='Hydrosan',
+                last_changes=timezone.now(),
+                last_changes_details="Utworzono nowy produkt"
+            )
         return product
     except Exception as e:
         print(f"Error processing {url}: {e}")
@@ -104,10 +130,35 @@ def fetch_product_details_mazurspa(url):
 
         website = url
 
-        product, created = Product.objects.update_or_create(
-            website=website,
-            defaults={'name': name, 'price': price, 'stock': stock, 'category': categories, 'shop': 'mazurspa'}
-        )
+        product = Product.objects.filter(website=website).first()
+
+        changes = []
+        if product:
+            if product.price != price:
+                changes.append(f"Zmieniono cenę z {product.price} na {price}")
+            if product.stock != stock:
+                changes.append(f"Zmieniono stock z {product.stock} na {stock}")
+
+            if changes:
+                product.name = name
+                product.price = price
+                product.stock = stock
+                product.category = categories
+                product.shop = 'MazurSpa'
+                product.last_changes = timezone.now()
+                product.last_changes_details = "; ".join(changes)
+                product.save()
+        else:
+            product = Product.objects.create(
+                name=name,
+                price=price,
+                stock=stock,
+                category=categories,
+                website=website,
+                shop='MazurSpa',
+                last_changes=timezone.now(),
+                last_changes_details="Utworzono nowy produkt"
+            )
         return product
     except Exception as e:
         print(f"Error processing {url}: {e}")
@@ -144,10 +195,36 @@ def fetch_product_details_spapartsvortex(url):
 
         website = url
 
-        product, created = Product.objects.update_or_create(
-            website=website,
-            defaults={'name': name, 'price': Decimal('0.00'), 'stock': stock, 'category': categories, 'shop': 'SpaPartsVortex'}
-        )
+        product = Product.objects.filter(website=website).first()
+        price = 0
+        changes = []
+        if product:
+            if product.price != price:
+                changes.append(f"Zmieniono cenę z {product.price} na {price}")
+            if product.stock != stock:
+                changes.append(f"Zmieniono stock z {product.stock} na {stock}")
+
+            if changes:
+                # Zaktualizuj tylko zmienione pola i ustaw last_changes
+                product.name = name
+                product.price = price
+                product.stock = stock
+                product.category = categories
+                product.shop = 'SpaPartsVortex'
+                product.last_changes = timezone.now()
+                product.last_changes_details = "; ".join(changes)
+                product.save()
+        else:
+            product = Product.objects.create(
+                name=name,
+                price=price,
+                stock=stock,
+                category=categories,
+                website=website,
+                shop='SpaPartsVortex',
+                last_changes=timezone.now(),
+                last_changes_details="Utworzono nowy produkt"
+            )
         return product
     except Exception as e:
         print(f"Error processing {url}: {e}")

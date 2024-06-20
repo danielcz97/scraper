@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Product
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'stock', 'category', 'website', 'shop', 'last_changes')
+    list_display = ('name', 'price', 'stock', 'category', 'website', 'shop', 'last_changes', 'last_changes_details')
     search_fields = ('name', 'price', 'stock', 'category', 'website', 'shop')
     list_filter = ('shop', 'category', 'last_changes' )
     ordering = ('last_changes',)
