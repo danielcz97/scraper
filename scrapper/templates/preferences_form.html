@@ -1,0 +1,7 @@
+{% load i18n admin_list %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Zapisz preferencje</button>
+</form>

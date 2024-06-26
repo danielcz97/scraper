@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'scrapper'
+    'scrapper',
 ]
 
 MIDDLEWARE = [
@@ -61,14 +61,14 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request', 
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 

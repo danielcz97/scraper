@@ -1,0 +1,42 @@
+{% load i18n admin_list %}
+<div class="filter-wrapper">
+    <h3>{% blocktrans with title as title %}{{ title }}{% endblocktrans %}</h3>
+    <form method="get">
+        {% for key, value in request.GET.items %}
+            {% if key != spec.parameter_name %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endif %}
+        {% endfor %}
+        <ul>
+            {% for choice in choices %}
+                <li>
+                    <label>
+                        <input type="checkbox" name="{{ spec.parameter_name }}" value="{{ choice.lookup }}" {% if choice.selected %}checked{% endif %} />
+                        {{ choice.display }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">{% trans "Apply" %}</button>
+    </form>
+</div>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector(".filter-wrapper form");
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const allInputs = Array.from(document.querySelectorAll("input[type='checkbox'][name='category']:checked"));
+        const selectedValues = allInputs.map(input => input.value);
+        const categoryInput = document.createElement("input");
+        categoryInput.type = "hidden";
+        categoryInput.name = "category";
+        categoryInput.value = selectedValues.join(',');
+        
+        // Usuwamy wszystkie wcześniejsze checkboxy, aby nie były wysyłane
+        allInputs.forEach(input => input.remove());
+        
+        form.appendChild(categoryInput);
+        form.submit();
+    });
+});
+</script>
